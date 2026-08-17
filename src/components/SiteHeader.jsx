@@ -1,7 +1,12 @@
 import { HARDWARE_SUGAR_URL, SHEET_URL } from "../config.js";
 import { Spinner } from "./Spinner.jsx";
 
-export function SiteHeader({ status, error, refreshedAt }) {
+export function SiteHeader({ status, error, refreshedAt, source, isRefreshing, isStale }) {
+  const refreshTime = refreshedAt?.toLocaleTimeString("en-PH", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
   return (
     <header className="site-header">
       <nav className="nav shell" aria-label="Primary navigation">
@@ -44,12 +49,18 @@ export function SiteHeader({ status, error, refreshedAt }) {
             {status === "loading"
               ? "Loading live prices…"
               : status === "ready"
-                ? "Live sheet connected"
+                ? isRefreshing
+                  ? "Updating cached prices…"
+                  : isStale
+                    ? "Using cached prices"
+                    : source === "cache"
+                      ? "Prices loaded from cache"
+                      : "Live sheet connected"
                 : "Live data unavailable"}
           </span>
           <span>
             {status === "ready" && refreshedAt
-              ? `Refreshed ${refreshedAt.toLocaleTimeString("en-PH", { hour: "numeric", minute: "2-digit" })}`
+              ? `${source === "cache" ? "Last refreshed" : "Refreshed"} ${refreshTime}${isStale && error ? " · Live refresh unavailable" : ""}`
               : status === "error"
                 ? error?.message
                 : "Connecting to Google Sheets"}

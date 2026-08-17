@@ -5,6 +5,7 @@ A React static site that presents live PC-part price history from a public Googl
 ## What it includes
 
 - Live data from the selected Google Sheet tab (`gid=2041302730`)
+- A 30-minute local cache with stale-data fallback when Google Sheets is unavailable
 - Search, category filtering, price-drop filtering, and sorting
 - Latest price, previous-reading change, tracked range, and sparklines
 - A detail view with a full price-history chart and the 12 most recent records
@@ -16,13 +17,18 @@ The price history is sourced from Hardware Sugar's public Google Sheet. Hardware
 
 ## Public-data method
 
-The page loads the Google Visualization API endpoint as JSONP:
+The page loads the Google Visualization API endpoint as JSONP when its local cache is missing or
+more than 30 minutes old:
 
 ```text
 https://docs.google.com/spreadsheets/d/SHEET_ID/gviz/tq?gid=SHEET_GID&tqx=out:json;responseHandler:CALLBACK
 ```
 
 JSONP is used because the direct CSV response does not provide a permissive browser CORS header. The fixed Google-hosted callback allows a static GitHub Pages site to read the public sheet without a proxy. The sheet must remain publicly viewable.
+
+Each browser stores the last successful response in `localStorage`. Fresh cache entries avoid a
+network request, while expired entries remain visible during a background refresh. If that refresh
+fails, the app continues showing the last valid data and marks it as cached.
 
 The parser treats the first row as the timeline, rows with a name in column A and no price values as category headings, and rows with a name plus price values as products. Rows with a blank column A are ignored, which excludes the unlabeled archive area beneath the active list.
 
@@ -68,7 +74,7 @@ No secrets should be added: all values and source code published through GitHub 
 
 ## Limitations
 
-- The source sheet is the source of truth; this site does not edit or cache it.
+- The source sheet is the source of truth; each browser keeps its own cached copy for resilience.
 - Google Sheets or network outages show a retryable error state.
 - If the sheet is made private, direct loading will stop working.
 - This parser intentionally ignores unlabeled archived rows below the active catalog.

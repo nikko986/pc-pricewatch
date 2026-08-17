@@ -7,12 +7,16 @@ import {
   SHEET_LOAD_TIMEOUT_MS,
 } from "../config.js";
 import { parseSheet } from "../lib/pricewatch.js";
+import { readSheetCache, writeSheetCache } from "../lib/sheetCache.js";
 
 const emptyResult = {
   status: "loading",
   products: [],
   error: null,
   refreshedAt: null,
+  source: null,
+  isRefreshing: false,
+  isStale: false,
 };
 
 export function useSheetData(retryKey) {
@@ -21,13 +25,51 @@ export function useSheetData(retryKey) {
   useEffect(() => {
     let active = true;
     let timeout;
-    setResult(emptyResult);
+    let cachedResult = null;
+
+    const cached = readSheetCache();
+    if (cached) {
+      try {
+        cachedResult = {
+          status: "ready",
+          products: parseSheet(cached.response),
+          error: null,
+          refreshedAt: cached.cachedAt,
+          source: "cache",
+          isRefreshing: !cached.isFresh,
+          isStale: !cached.isFresh,
+        };
+      } catch {
+        cachedResult = null;
+      }
+    }
+
+    setResult(cachedResult ?? emptyResult);
     document.getElementById("sheet-data-script")?.remove();
+
+    if (cached?.isFresh && cachedResult && retryKey === 0) {
+      return () => {
+        active = false;
+      };
+    }
 
     const finishWithError = (error = new Error("Please try again.")) => {
       window.clearTimeout(timeout);
       if (active) {
-        setResult({ status: "error", products: [], error, refreshedAt: null });
+        setResult(
+          cachedResult
+            ? {
+                ...cachedResult,
+                error,
+                isRefreshing: false,
+                isStale: true,
+              }
+            : {
+                ...emptyResult,
+                status: "error",
+                error,
+              },
+        );
       }
     };
 
@@ -36,11 +78,17 @@ export function useSheetData(retryKey) {
       window.clearTimeout(timeout);
 
       try {
+        const refreshedAt = new Date();
+        const products = parseSheet(response);
+        writeSheetCache(response, undefined, refreshedAt.getTime());
         setResult({
           status: "ready",
-          products: parseSheet(response),
+          products,
           error: null,
-          refreshedAt: new Date(),
+          refreshedAt,
+          source: "network",
+          isRefreshing: false,
+          isStale: false,
         });
       } catch (error) {
         finishWithError(error);

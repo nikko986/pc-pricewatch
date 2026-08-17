@@ -4,3 +4,5 @@ export const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edi
 export const HARDWARE_SUGAR_URL = "https://hwsugar.ph";
 export const SHEET_CALLBACK = "__pricewatchSheetLoaded";
 export const SHEET_LOAD_TIMEOUT_MS = 15000;
+export const SHEET_CACHE_KEY = "pc-pricewatch:sheet-data:v1";
+export const SHEET_CACHE_TTL_MS = 30 * 60 * 1000;
