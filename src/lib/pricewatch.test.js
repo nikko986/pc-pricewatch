@@ -34,7 +34,7 @@ test("rejects invalid or empty sheet responses", () => {
   assert.throws(() => parseSheet({ status: "error" }), /invalid response/);
 });
 
-test("filters and sorts products without mutating source order", () => {
+test("filters by brand and part type without mutating source order", () => {
   const products = [
     {
       name: "5070",
@@ -53,8 +53,9 @@ test("filters and sorts products without mutating source order", () => {
   ];
 
   const result = filterAndSortProducts(products, {
-    search: "AMD",
-    category: "all",
+    search: "",
+    brand: "amd",
+    partType: "cpu",
     sort: "price-asc",
     dropsOnly: true,
   });
