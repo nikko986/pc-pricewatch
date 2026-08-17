@@ -17,7 +17,8 @@ const defaultFilters = {
 
 export default function App() {
   const [retryKey, setRetryKey] = useState(0);
-  const { status, products, error, refreshedAt } = useSheetData(retryKey);
+  const { status, products, error, refreshedAt, source, isRefreshing, isStale } =
+    useSheetData(retryKey);
   const [filters, setFilters] = useState(defaultFilters);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -51,7 +52,14 @@ export default function App() {
       <a className="skip-link" href="#price-table">
         Skip to prices
       </a>
-      <SiteHeader status={status} error={error} refreshedAt={refreshedAt} />
+      <SiteHeader
+        status={status}
+        error={error}
+        refreshedAt={refreshedAt}
+        source={source}
+        isRefreshing={isRefreshing}
+        isStale={isStale}
+      />
 
       <main className="shell main-content">
         <SummaryStats status={status} products={products} latest={latest} drops={drops} />
