@@ -10,7 +10,8 @@ import { filterAndSortProducts } from "./lib/pricewatch.js";
 
 const defaultFilters = {
   search: "",
-  category: "all",
+  brand: "all",
+  partType: "all",
   sort: "sheet",
   dropsOnly: false,
 };
@@ -22,10 +23,6 @@ export default function App() {
   const [filters, setFilters] = useState(defaultFilters);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const categories = useMemo(
-    () => [...new Set(products.map((product) => product.category))],
-    [products],
-  );
   const latest = useMemo(
     () =>
       products
@@ -67,7 +64,6 @@ export default function App() {
           status={status}
           products={products}
           visibleProducts={visibleProducts}
-          categories={categories}
           filters={filters}
           onFilterChange={updateFilter}
           onClearFilters={() => setFilters(defaultFilters)}

@@ -1,18 +1,28 @@
 import { ProductRow } from "./ProductRow.jsx";
 import { Spinner } from "./Spinner.jsx";
 
+const brands = [
+  { value: "nvidia", label: "NVIDIA" },
+  { value: "amd", label: "AMD" },
+  { value: "intel", label: "Intel" },
+];
+
+const partTypes = [
+  { value: "gpu", label: "GPU" },
+  { value: "cpu", label: "CPU" },
+];
+
 export function PriceExplorer({
   status,
   products,
   visibleProducts,
-  categories,
   filters,
   onFilterChange,
   onClearFilters,
   onRetry,
   onSelectProduct,
 }) {
-  const { search, category, sort, dropsOnly } = filters;
+  const { search, brand, partType, sort, dropsOnly } = filters;
 
   return (
     <section className="explorer" aria-labelledby="explorer-title">
@@ -45,15 +55,26 @@ export function PriceExplorer({
           />
         </label>
         <label className="select-field">
-          <span>Category</span>
+          <span>Brand</span>
+          <select value={brand} onChange={(event) => onFilterChange("brand", event.target.value)}>
+            <option value="all">All brands</option>
+            {brands.map((item) => (
+              <option key={item.value} value={item.value}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="select-field">
+          <span>Part type</span>
           <select
-            value={category}
-            onChange={(event) => onFilterChange("category", event.target.value)}
+            value={partType}
+            onChange={(event) => onFilterChange("partType", event.target.value)}
           >
-            <option value="all">All categories</option>
-            {categories.map((item) => (
-              <option key={item} value={item}>
-                {item}
+            <option value="all">All parts</option>
+            {partTypes.map((item) => (
+              <option key={item.value} value={item.value}>
+                {item.label}
               </option>
             ))}
           </select>

@@ -1,3 +1,5 @@
+import { getCategoryTheme } from "./categoryTheme.js";
+
 export const peso = new Intl.NumberFormat("en-PH", {
   style: "currency",
   currency: "PHP",
@@ -135,15 +137,17 @@ export function changeClass(value) {
 
 export function filterAndSortProducts(products, filters) {
   const query = filters.search.trim().toLocaleLowerCase();
+  const brand = filters.brand ?? "all";
+  const partType = filters.partType ?? "all";
 
   return products
     .filter((product) => {
       const matchesQuery =
         !query || `${product.name} ${product.category}`.toLocaleLowerCase().includes(query);
-      const matchesCategory =
-        filters.category === "all" || product.category === filters.category;
+      const matchesBrand = brand === "all" || getCategoryTheme(product.category) === brand;
+      const matchesPartType = partType === "all" || product.category.toLowerCase().includes(partType);
       const matchesDrop = !filters.dropsOnly || (product.change !== null && product.change < 0);
-      return matchesQuery && matchesCategory && matchesDrop;
+      return matchesQuery && matchesBrand && matchesPartType && matchesDrop;
     })
     .sort((a, b) => {
       switch (filters.sort) {
