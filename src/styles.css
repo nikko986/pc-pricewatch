@@ -44,6 +44,7 @@ a { color: inherit; }
 .hero { position: relative; z-index: 1; padding-block: 80px 108px; }
 .eyebrow, .kicker { color: var(--cyan-dark); font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .eyebrow { display: flex; align-items: center; gap: 9px; color: #a8c9c8; }
+.eyebrow a { color: inherit; font-weight: 850; text-underline-offset: 3px; }
 .live-dot { width: 8px; height: 8px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 0 5px rgba(66, 214, 200, .12); }
 .hero h1 { max-width: 760px; margin: 18px 0; font-size: clamp(48px, 7vw, 82px); line-height: .98; letter-spacing: -.055em; }
 .hero h1 span { color: var(--cyan); }
@@ -120,6 +121,7 @@ tbody tr:focus { background: #f3fbfa; outline: 2px solid var(--cyan-dark); outli
 
 .about-strip { margin: 34px 0 70px; padding: 34px 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; background: #eaf5f3; border-radius: 14px; }
 .about-strip p { margin: 0; color: #556578; }
+.about-strip a { color: var(--cyan-dark); font-weight: 750; text-underline-offset: 3px; }
 footer { color: #96a6b7; background: var(--navy); }
 .footer-inner { min-height: 88px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
 .footer-inner a { color: #cad5df; text-decoration: none; }
