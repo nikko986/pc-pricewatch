@@ -96,9 +96,13 @@ td { padding: 16px 18px; border-bottom: 1px solid #e8edf2; color: #3e4a5c; font-
 tbody tr { cursor: pointer; transition: background .15s; }
 tbody tr:hover { background: #f7fbfb; }
 tbody tr:focus { background: #f3fbfa; outline: 2px solid var(--cyan-dark); outline-offset: -2px; }
-.part-button { color: var(--navy); font-weight: 780; text-align: left; }
-.part-button small { display: none; color: var(--muted); font-weight: 500; }
-.category-tag { display: inline-block; padding: 4px 8px; color: #526175; background: var(--soft); border-radius: 5px; font-size: 11px; font-weight: 750; }
+.part-button { display: inline-flex; flex-direction: column; align-items: flex-start; color: var(--navy); font-weight: 780; text-align: left; }
+.category-tag { display: inline-block; padding: 4px 8px; border: 1px solid transparent; border-radius: 5px; font-size: 11px; font-weight: 800; line-height: 1.2; }
+.category-tag.part-category-tag { display: none; }
+.category-tag--nvidia { color: var(--green); background: var(--green-soft); border-color: #c7ead5; }
+.category-tag--intel { color: #075ca8; background: #e7f3ff; border-color: #acd2f3; }
+.category-tag--amd { color: var(--red); background: var(--red-soft); border-color: #f2ccd0; }
+.category-tag--default { color: #526175; background: var(--soft); border-color: #dce4eb; }
 .price { color: var(--navy); font-variant-numeric: tabular-nums; font-weight: 750; white-space: nowrap; }
 .price small { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; font-weight: 500; }
 .delta { display: inline-flex; min-width: 73px; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 5px; font-variant-numeric: tabular-nums; font-weight: 750; }
@@ -130,6 +134,7 @@ footer { color: #96a6b7; background: var(--navy); }
 dialog { width: min(760px, calc(100% - 28px)); max-height: min(820px, calc(100vh - 32px)); padding: 0; color: var(--ink); background: var(--paper); border: 0; border-radius: 16px; box-shadow: 0 30px 90px rgba(3, 12, 22, .35); }
 dialog::backdrop { background: rgba(5, 14, 24, .7); backdrop-filter: blur(3px); }
 .dialog-header { display: flex; justify-content: space-between; align-items: start; padding: 26px 28px 20px; border-bottom: 1px solid var(--line); }
+.dialog-category-tag { margin-bottom: 6px; }
 .dialog-header h2 { margin: 3px 0 0; color: var(--navy); font-size: 28px; letter-spacing: -.03em; }
 .icon-button { width: 38px; height: 38px; display: grid; place-items: center; color: #526175; background: var(--soft); border: 0; border-radius: 50%; font-size: 25px; line-height: 1; cursor: pointer; }
 .icon-button:hover { color: var(--navy); background: #e4eaef; }
@@ -155,7 +160,7 @@ dialog::backdrop { background: rgba(5, 14, 24, .7); backdrop-filter: blur(3px); 
   .search-field { grid-column: 1 / -1; }
   .drop-toggle { justify-self: end; }
   th:nth-child(2), td:nth-child(2), th:nth-child(5), td:nth-child(5) { display: none; }
-  .part-button small { display: block; }
+  .category-tag.part-category-tag { display: inline-block; margin-top: 5px; }
 }
 
 @media (max-width: 660px) {

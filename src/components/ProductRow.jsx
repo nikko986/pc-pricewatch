@@ -1,4 +1,5 @@
 import { changeClass, formatChange, peso } from "../lib/pricewatch.js";
+import { CategoryTag } from "./CategoryTag.jsx";
 import { Sparkline } from "./PriceCharts.jsx";
 
 export function ProductRow({ product, onSelect }) {
@@ -14,11 +15,11 @@ export function ProductRow({ product, onSelect }) {
       <td>
         <span className="part-button">
           {product.name}
-          <small>{product.category}</small>
+          <CategoryTag category={product.category} className="part-category-tag" />
         </span>
       </td>
       <td>
-        <span className="category-tag">{product.category}</span>
+        <CategoryTag category={product.category} />
       </td>
       <td className="price">
         {peso.format(product.current.value)}
