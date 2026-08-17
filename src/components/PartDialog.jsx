@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 
 import { changeClass, formatChange, peso } from "../lib/pricewatch.js";
+import { CategoryTag } from "./CategoryTag.jsx";
 import { PriceChart } from "./PriceCharts.jsx";
 
 export function PartDialog({ product, onClose }) {
@@ -28,7 +29,7 @@ export function PartDialog({ product, onClose }) {
     >
       <div className="dialog-header">
         <div>
-          <span className="kicker">{product.category}</span>
+          <CategoryTag category={product.category} className="dialog-category-tag" />
           <h2 id="dialog-title">{product.name}</h2>
         </div>
         <button className="icon-button" type="button" aria-label="Close details" onClick={onClose}>
